@@ -1,0 +1,31 @@
+name: php-apache-proxy.5.6
+
+on:
+  push:
+    branches: nginx-proxy
+  schedule:
+    - cron:  '45 0 */10 * *'
+env:
+  IMAGE_NAME: php-apache-proxy
+
+jobs:
+  test:
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build Test
+        run: docker build . --file docker/proxy/php-apache/5.6/Dockerfile
+  push:
+    needs: [test]
+    name: Publish to Docker Hub
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build image
+        run: |
+          docker build . --file docker/proxy/php-apache/5.6/Dockerfile -t ${{ secrets.hub_user }}/$IMAGE_NAME:5.6
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.hub_token  }}" | docker login -u ${{ secrets.hub_user }} --password-stdin
+      - name: Push Image to Docker Hub
+        run: |
+          docker push ${{ secrets.hub_user }}/$IMAGE_NAME:5.6
