@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build Test
-        run: docker build . --file docker/proxy/php-apache/5.6/Dockerfile
+        #run: docker build . --file docker/proxy/php-apache/5.6/Dockerfile
         run: docker build . --file docker/proxy/php-apache/7.4/Dockerfile
   push:
     needs: [test]
@@ -30,6 +30,6 @@ jobs:
         run: echo "${{ secrets.hub_token  }}" | docker login -u ${{ secrets.hub_user }} --password-stdin
       - name: Push Image to Docker Hub
         run: |
-          docker push ${{ secrets.hub_user }}/$IMAGE_NAME:5.6
+          #docker push ${{ secrets.hub_user }}/$IMAGE_NAME:5.6
           docker push ${{ secrets.hub_user }}/$IMAGE_NAME:7.4
           
