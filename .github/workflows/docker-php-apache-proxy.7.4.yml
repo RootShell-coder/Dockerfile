@@ -4,7 +4,7 @@ on:
   push:
     branches: nginx-proxy
   schedule:
-    - cron:  '45 0 */10 * *'
+    - cron:  '45 1 */10 * *'
 env:
   IMAGE_NAME: php-apache-proxy
 
